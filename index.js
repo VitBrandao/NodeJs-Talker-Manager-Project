@@ -20,6 +20,11 @@ const allTalkers = require('./middlewares/allTalkers');
 
 app.use('/talker', readTalkers, allTalkers);
 
+// Req.2
+const getTalkerById = require('./middlewares/getTalkerById');
+
+app.use('/talker/:id', readTalkers, getTalkerById);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
