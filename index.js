@@ -12,6 +12,11 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+// Req. 1
+const talker = require('./middlewares/allTalkers');
+
+app.use('/talker', talker);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
