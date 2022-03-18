@@ -33,7 +33,9 @@ app.post('/login', login);
 // Req.4
 const addNewTalker = require('./middlewares/addNewTalker');
 
-app.post('/talker', addNewTalker);
+const writeTalker = require('./middlewares/writeTalker');
+
+app.post('/talker', readTalkers, addNewTalker, writeTalker);
 
 app.listen(PORT, () => {
   console.log('Online');

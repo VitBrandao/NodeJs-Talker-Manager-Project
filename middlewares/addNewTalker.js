@@ -43,6 +43,13 @@ const validateAge = (age) => {
 };
 
 const talkEmptyFields = (talk) => {
+  if (!talk) {
+    const message = { 
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    };
+    return message;
+  }
+
   const { watchedAt, rate } = talk;
   
   if (!watchedAt || !rate) {
@@ -56,10 +63,10 @@ const talkEmptyFields = (talk) => {
 };
 
 const validateTalk = (talk) => {
-  const { watchedAt, rate } = talk;
-
   const validateEmptyFields = talkEmptyFields(talk);
   if (validateEmptyFields !== 'ok') return validateEmptyFields;
+
+  const { watchedAt, rate } = talk;
 
   const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
   if (!watchedAt.match(dateFormat)) {
@@ -75,12 +82,10 @@ const validateTalk = (talk) => {
   return 'ok';
 };
 
-const talkersList = require('../talker.json');
-
-const addNewTalker = (req, res) => {
+const addNewTalker = (req, res, next) => {
   const { authorization } = req.headers;
   const { name, age, talk } = req.body;
-
+  
   const tokenValidation = validateToken(authorization);
   if (tokenValidation !== 'ok') return res.status(401).send(tokenValidation);
 
@@ -92,10 +97,9 @@ const addNewTalker = (req, res) => {
 
   const talkValidation = validateTalk(talk);
   if (talkValidation !== 'ok') return res.status(400).send(talkValidation);
-  
-  const finalObject = { id: 1, name, age, talk };
-  talkersList.push(finalObject);
-  return res.status(201).send(finalObject);
+
+  req.newTalker = { name, age, talk };
+  next();
 };
 
 module.exports = addNewTalker;

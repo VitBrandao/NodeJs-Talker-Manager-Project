@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   const { talkers } = req;
-
+ 
   res.status(200).send(talkers);
 });
 
