@@ -3,8 +3,7 @@ const validateName = require('./validations/validateName');
 const validateAge = require('./validations/validateAge');
 const validateTalk = require('./validations/validateTalk');
 
-const editTalker = (req, res) => {
-  const { id } = req.params;
+const allValidations = (req, res) => {
   const { name, age, talk } = req.body;
   const { authorization } = req.headers;
   // console.log(`${age} name`);
@@ -20,8 +19,18 @@ const editTalker = (req, res) => {
   const talkValidation = validateTalk(talk);
   if (talkValidation !== 'ok') return res.status(400).send(talkValidation);
 
-  const findTalker = req.talkers.find((talker) => talker.id === Number(id));
-  return res.status(200).send(findTalker);
+  return 'ok';
+};
+
+const editTalker = (req, res) => {
+  const verify = allValidations(req, res);
+
+  if (verify === 'ok') {
+    const { id } = req.params;
+
+    const findTalker = req.talkers.find((talker) => talker.id === Number(id));
+    return res.status(200).send(findTalker);
+  }
 };
 
 module.exports = editTalker;
