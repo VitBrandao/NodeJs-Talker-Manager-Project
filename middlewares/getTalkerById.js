@@ -10,7 +10,7 @@ Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpo
 const getTalkerById = (req, res) => {
   const { id } = req.params;
   const { talkers } = req;
-  console.log(id);
+  // console.log(id);
   const findTalker = talkers.find((t) => t.id === Number(id));
   
   if (!findTalker) {

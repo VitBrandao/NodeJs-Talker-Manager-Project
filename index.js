@@ -15,6 +15,11 @@ app.get('/', (_request, response) => {
 // Função de ler arquivos
 const readTalkers = require('./middlewares/readTalkers');
 
+// Req.5 - antecipado na lista por dar conflitos com o 2
+const editTalker = require('./middlewares/editTalker');
+
+app.put('/talker/:id', readTalkers, editTalker);
+
 // Req. 1
 const allTalkers = require('./middlewares/allTalkers');
 
@@ -23,7 +28,7 @@ app.use('/talker', readTalkers, allTalkers);
 // Req.2
 const getTalkerById = require('./middlewares/getTalkerById');
 
-app.use('/talker/:id', readTalkers, getTalkerById);
+app.get('/talker/:id', readTalkers, getTalkerById);
 
 // Req.3
 const login = require('./middlewares/login');
