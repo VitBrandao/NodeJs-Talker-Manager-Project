@@ -12,10 +12,13 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// Req. 1
-const talker = require('./middlewares/allTalkers');
+// Função de ler arquivos
+const readTalkers = require('./middlewares/readTalkers');
 
-app.use('/talker', talker);
+// Req. 1
+const allTalkers = require('./middlewares/allTalkers');
+
+app.use('/talker', readTalkers, allTalkers);
 
 app.listen(PORT, () => {
   console.log('Online');

@@ -7,14 +7,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const API = require('../talker.json');
+router.get('/', (req, res) => {
+  const { talkers } = req;
 
-router.get('/', (_req, res) => {
-  // if (API.length === 0) {
-  //   return res.status(200).send([]);
-  // }
-
-  res.status(200).send(API);
+  res.status(200).send(talkers);
 });
 
 module.exports = router;
