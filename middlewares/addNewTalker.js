@@ -42,9 +42,42 @@ const validateAge = (age) => {
   return 'ok';
 };
 
+const talkEmptyFields = (talk) => {
+  const { watchedAt, rate } = talk;
+  
+  if (!watchedAt || !rate) {
+    const message = { 
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    };
+    return message;
+  }
+  
+  return 'ok';
+};
+
+const validateTalk = (talk) => {
+  const { watchedAt, rate } = talk;
+
+  const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+  if (!watchedAt.match(dateFormat)) {
+    const message = { message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' };
+    return message;
+  }
+
+  if (rate < 0 || rate > 5) {
+    const message = { message: 'O campo "rate" deve ser um inteiro de 1 à 5' };
+    return message;
+  }
+
+  const validateEmptyFields = talkEmptyFields(talk);
+  if (validateEmptyFields !== 'ok') return validateEmptyFields;
+  
+  return 'ok';
+};
+
 const addNewTalker = (req, res) => {
   const { token } = req.headers;
-  const { name, age } = req.body;
+  const { name, age, talk } = req.body;
 
   const tokenValidation = validateToken(token);
   if (tokenValidation !== 'ok') return res.status(401).send(tokenValidation);
@@ -54,6 +87,9 @@ const addNewTalker = (req, res) => {
 
   const ageValidation = validateAge(age);
   if (ageValidation !== 'ok') return res.status(400).send(ageValidation);
+
+  const talkValidation = validateTalk(talk);
+  if (talkValidation !== 'ok') return res.status(400).send(talkValidation);
 };
 
 module.exports = addNewTalker;
