@@ -28,19 +28,32 @@ const validateName = (name) => {
   return 'ok';
 };
 
+const validateAge = (age) => {
+  if (!age) {
+    const message = { message: 'O campo "age" é obrigatório' };
+    return message;
+  }
+
+  if (age < 18) {
+    const message = { message: 'A pessoa palestrante deve ser maior de idade' };
+    return message;
+  }
+
+  return 'ok';
+};
+
 const addNewTalker = (req, res) => {
   const { token } = req.headers;
-  const { name } = req.body;
+  const { name, age } = req.body;
 
   const tokenValidation = validateToken(token);
-  if (tokenValidation !== 'ok') {
-    return res.status(401).send(tokenValidation);
-  }
+  if (tokenValidation !== 'ok') return res.status(401).send(tokenValidation);
 
   const nameValidation = validateName(name);
-  if (nameValidation !== 'ok') {
-    return res.status(400).send(nameValidation);
-  }
+  if (nameValidation !== 'ok') return res.status(400).send(nameValidation);
+
+  const ageValidation = validateAge(age);
+  if (ageValidation !== 'ok') return res.status(400).send(ageValidation);
 };
 
 module.exports = addNewTalker;
