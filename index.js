@@ -42,6 +42,11 @@ const writeTalker = require('./middlewares/writeTalker');
 
 app.post('/talker', readTalkers, addNewTalker, writeTalker);
 
+// Req.7
+const deleteTalker = require('./middlewares/deleteTalker');
+
+app.delete('/talker/:id', readTalkers, deleteTalker);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
