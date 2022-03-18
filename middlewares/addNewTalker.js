@@ -1,5 +1,5 @@
 const validateToken = (token) => {
-  const expectedToken = { token: '7mqaVRXJSp886CGr' };
+  const expectedToken = '7mqaVRXJSp886CGr';
 
   if (!token) {
     const message = { message: 'Token não encontrado' };
@@ -58,6 +58,9 @@ const talkEmptyFields = (talk) => {
 const validateTalk = (talk) => {
   const { watchedAt, rate } = talk;
 
+  const validateEmptyFields = talkEmptyFields(talk);
+  if (validateEmptyFields !== 'ok') return validateEmptyFields;
+
   const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
   if (!watchedAt.match(dateFormat)) {
     const message = { message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' };
@@ -68,18 +71,17 @@ const validateTalk = (talk) => {
     const message = { message: 'O campo "rate" deve ser um inteiro de 1 à 5' };
     return message;
   }
-
-  const validateEmptyFields = talkEmptyFields(talk);
-  if (validateEmptyFields !== 'ok') return validateEmptyFields;
   
   return 'ok';
 };
 
+const talkersList = require('../talker.json');
+
 const addNewTalker = (req, res) => {
-  const { token } = req.headers;
+  const { authorization } = req.headers;
   const { name, age, talk } = req.body;
 
-  const tokenValidation = validateToken(token);
+  const tokenValidation = validateToken(authorization);
   if (tokenValidation !== 'ok') return res.status(401).send(tokenValidation);
 
   const nameValidation = validateName(name);
@@ -90,6 +92,10 @@ const addNewTalker = (req, res) => {
 
   const talkValidation = validateTalk(talk);
   if (talkValidation !== 'ok') return res.status(400).send(talkValidation);
+  
+  const finalObject = { id: 1, name, age, talk };
+  talkersList.push(finalObject);
+  return res.status(201).send(finalObject);
 };
 
 module.exports = addNewTalker;
