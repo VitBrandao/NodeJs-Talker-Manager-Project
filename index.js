@@ -8,6 +8,7 @@ const addNewTalker = require('./middlewares/addNewTalker'); // 4
 const writeTalker = require('./middlewares/writeTalker'); // 4
 const editTalker = require('./middlewares/editTalker'); // 5
 const deleteTalker = require('./middlewares/deleteTalker'); // 6
+const searchTalker = require('./middlewares/searchTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,6 +23,9 @@ app.get('/', (_request, response) => {
 
 // Função de ler arquivos
 const readTalkers = require('./middlewares/readTalkers');
+
+// Req.7
+app.get('/talker/search', readTalkers, searchTalker);
 
 // Req.5 - antecipado na lista por dar conflitos com o 2
 app.put('/talker/:id', readTalkers, editTalker);
