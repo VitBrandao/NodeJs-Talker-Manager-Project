@@ -7,7 +7,7 @@ This experience began with a simple **npm init** to build the **package.json** f
 
 > Where can you can find my codes?
 - The **middlewares** directory contains all the functions that receive **(request, response** and **next**) as parameters and return a **response with status and specific data**;
-- Inside the same directory you will find another directory called **validations** which contains some functions whose logic could be used in more than one part of the code to validate information received in **req.headers and req.body**;
+- Inside the same directory you will find another directory called **validations** which contains some functions whose logic could be used in more than one part of the code to validate information received ias **headers and body requisitions**;
 - The **index.js** file in the root contains all the requests (**GET, POST, PUT, DELETE**), the **Express module import** and the **Express.listen()** to set the 3000 localhost port as the server. 
 
 
